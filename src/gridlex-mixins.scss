@@ -1,9 +1,20 @@
+@use "sass:math";
+
+@import "cq";
+
 // Make the breakpoints
 @mixin bp($breakpoint) {
   $query: map-get($gl-mq-list, $breakpoint);
   @if $query != null {
-    @media ($gl-mq-width: #{nth($query, 1)}) {
-      @content;
+
+    @if $responsive-mode == 'media-query' {
+      @media ($gl-mq-width: #{nth($query, 1)}) {
+        @content;
+      }
+    } @else if $responsive-mode == 'container-query' {
+      @include cq-prolyfill(unquote("width <= #{nth($query, 1)}")) {
+        @content;
+      }
     }
   }
 }
@@ -15,7 +26,7 @@
       [#{$gl-attributeName}*="#{$grid}-#{$i}"] > [#{$gl-attributeName}~="#{$gl-colName}"],
       [#{$gl-attributeName}*="#{$grid}-#{$i}"] > [#{$gl-attributeName}*="#{$gl-colName}-"],
       [#{$gl-attributeName}*="#{$grid}-#{$i}"] > [#{$gl-attributeName}*="#{$gl-colName}_"] {
-        $fraction: 1 / $i;
+        $fraction: math.div(1, $i);
 
         flex-basis: map-get($gl-colFractions, $fraction);
         max-width: map-get($gl-colFractions, $fraction);

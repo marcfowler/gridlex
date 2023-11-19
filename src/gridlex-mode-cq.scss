@@ -2,6 +2,9 @@
     GRIDLEX
     Just a Flexbox Grid System - v. 2.7.1
 ========================================================================== */
+
+$responsive-mode: "container-query";
+
 @import "gridlex-vars";
 @import "gridlex-preprocessing";
 @import "gridlex-mixins";
